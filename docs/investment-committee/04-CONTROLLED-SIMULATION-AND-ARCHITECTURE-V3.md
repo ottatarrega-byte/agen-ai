@@ -397,9 +397,9 @@ Retests at pack bounds: none possible (no CALC inputs). Disconfirming search log
 
 Strongest credible case that the base analysis is wrong, in both directions, without strawmen:
 
-*Too lenient.* The base analysis stops at `WEAKENED` because the breaker evaluator says no hard breaker fired. But the evaluator was fed a breaker whose deadline is unidentified and whose profit threshold is undefined. Two of the five minimums are unevaluable by construction, and the analysis leans on that unevaluability to avoid `BROKEN`. Combined with A.X03, a reviewer could argue the thesis has no working definition of success and should be re-established rather than scored. The base analysis names this (A.U07, A.U08) but does not escalate it. Finding: `MEDIUM` — `THESIS_SPEC_INCOMPLETE`; propose an L2 item to record `thesis_date`, `deadline_period`, and the TTM profit threshold before the next run, else the thesis should be treated as drifted.
+*Too lenient.* The base analysis stops at `WEAKENED` because the breaker evaluator says no hard breaker fired. But the evaluator was fed a breaker whose deadline is unidentified and whose profit threshold is undefined. Two of the five minimums are unevaluable by construction, and the analysis leans on that unevaluability to avoid `BROKEN`. Combined with A.X03, a reviewer could argue the thesis has no working definition of success and should be re-established rather than scored. The base analysis names this (A.U07, A.U08) but does not escalate it. Finding: `MEDIUM`, `THESIS_SPEC_INCOMPLETE`; propose an L2 item to record `thesis_date`, `deadline_period`, and the TTM profit threshold before the next run, else the thesis should be treated as drifted.
 
-*Too harsh.* The base analysis treats one half-year as evidence against "temporary". But A.D06 is an upper bound on FX using this period's FX loss; the fixture says FX loss "increased materially", so the swing in FX between periods could be a larger share of the change in margin than the level suggests. Freight is unquantified in both directions. Revenue grew, the current ratio improved, and the TTM cash-conversion minimum was met. A reviewer could argue that `WEAKENED` with two `INSUFFICIENT_EVIDENCE` levers is the honest floor and that the memo's tone should not lean toward "structural". Finding: `LOW` — the base memo must not use the word "structural" without the H2 result; the status is `UNRESOLVED`.
+*Too harsh.* The base analysis treats one half-year as evidence against "temporary". But A.D06 is an upper bound on FX using this period's FX loss; the fixture says FX loss "increased materially", so the swing in FX between periods could be a larger share of the change in margin than the level suggests. Freight is unquantified in both directions. Revenue grew, the current ratio improved, and the TTM cash-conversion minimum was met. A reviewer could argue that `WEAKENED` with two `INSUFFICIENT_EVIDENCE` levers is the honest floor and that the memo's tone should not lean toward "structural". Finding: `LOW`: the base memo must not use the word "structural" without the H2 result; the status is `UNRESOLVED`.
 
 Audit items:
 
@@ -407,7 +407,7 @@ Audit items:
 - *Source quality:* every figure is fixture-asserted. In production, all margin figures would be T1 cells requiring V-03 identities; none could be checked here. The T3 interpretation (A.I01, A.I02) was correctly kept out of every derived value.
 - *Omitted downside:* dilution and refinancing (A.U11); the inventory reading of the current ratio; a covenant test whose terms are unknown.
 - *Management narrative:* absent; the only narrative in the bundle is the secondary analyst's, and the base analysis rebutted it deterministically (A.D06). Correct.
-- *False precision:* the base analysis renders 8.73%, 6.63%, 0.91x as exact. The fixture says "approximately 0.91x". The breaker margin is wide here, but the memo should render approximate inputs as approximate. Finding: `LOW` — precision leakage (becomes S3-06).
+- *False precision:* the base analysis renders 8.73%, 6.63%, 0.91x as exact. The fixture says "approximately 0.91x". The breaker margin is wide here, but the memo should render approximate inputs as approximate. Finding: `LOW`: precision leakage (becomes S3-06).
 - *Governance:* uncovered. `UNRESOLVABLE`.
 - *Opportunity cost:* no comparator, no price, no cash proxy. Not assessable. The base analysis says so.
 
@@ -812,7 +812,7 @@ B.M04 no dilutive rights issue this year      → year-end   → none announced 
                                                                                                     exists; NegativeSearchRecord required
                                                                                                     at each run until year-end)
 
-closed_evaluable_claims:  1 (B.M01) — B.M02 is observed but not due; closing it early would
+closed_evaluable_claims:  1 (B.M01). B.M02 is observed but not due; closing it early would
                           let a favourable early reading count before the deadline
 hit_rate:                 NOT RENDERED (below D-18 threshold of six closed evaluable claims)
 unevaluable_count:        1 (rendered as its own signal per V2 MG-01)

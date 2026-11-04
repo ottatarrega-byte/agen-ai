@@ -1,15 +1,18 @@
-<title>Buku Kas Otta</title>
+<title>Buku Kas Otta Wanda</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: one phone-width column, bottom tab bar, sheets slide up from the bottom. Receipt-paper surfaces on a cool ledger-green ground; Rp50k cobalt as the one accent. */
+/* Layout: one phone-width column, bottom tab bar, sheets slide up from the bottom.
+   Palette "green blue purple" (#bee3b6 #8fd4cb #7998cc #765fb0 #883689): the five swatches are surfaces,
+   category tiles and the brand band; text always uses the darkened ink/accent tokens so it stays readable. */
 :root{
-  --paper:#F3F5F1; --card:#FFFFFF; --sunk:#E9EDE8; --ink:#131916; --muted:#5D6862; --line:#DCE2DC;
-  --accent:#2446A3; --accent-ink:#FFFFFF; --accent-soft:#E2E8F7;
-  --in:#1D7A4B; --in-soft:#DDF0E5; --warn:#A9530E; --warn-soft:#FAEADB; --bad:#B3261E;
-  --c1:#2446A3; --c2:#1D7A4B; --c3:#A9530E; --c4:#7A3FA0; --c5:#0F7C86; --c6:#9C2F55; --c7:#6B6A1F; --c8:#58616B;
+  --p-mint:#bee3b6; --p-aqua:#8fd4cb; --p-blue:#7998cc; --p-purple:#765fb0; --p-plum:#883689;
+  --paper:#F6F5FA; --card:#FFFFFF; --sunk:#EDEAF5; --ink:#221B33; --muted:#5E5872; --line:#E2DEEC;
+  --accent:#6A52A6; --accent-ink:#FFFFFF; --accent-soft:#ECE7F8;
+  --in:#2E7542; --in-soft:#E4F3E0; --warn:#883689; --warn-soft:#F5E7F4; --bad:#B3261E;
+  --c1:#bee3b6; --c2:#8fd4cb; --c3:#7998cc; --c4:#765fb0; --c5:#883689; --c6:#9fd197; --c7:#a9bde3; --c8:#c3b6e6;
   --display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --body:"Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
   --mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -17,19 +20,22 @@
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --paper:#0E1210; --card:#171C19; --sunk:#1F2521; --ink:#E7EDE9; --muted:#97A39C; --line:#29302C;
-  --accent:#8FA7F2; --accent-ink:#0E1210; --accent-soft:#1D2641;
-  --in:#5DC690; --in-soft:#173126; --warn:#F0A262; --warn-soft:#3A2717; --bad:#FF8A80;
-  --c1:#8FA7F2; --c2:#5DC690; --c3:#F0A262; --c4:#C79BEA; --c5:#5CC7D0; --c6:#EE8DB0; --c7:#C9C56A; --c8:#A3ACB5;
+  --paper:#14111D; --card:#1D1929; --sunk:#27213A; --ink:#EEEBF6; --muted:#A8A1BE; --line:#332C48;
+  --accent:#AE9DE6; --accent-ink:#14111D; --accent-soft:#2B2446;
+  --in:#A9DBA0; --in-soft:#1E3123; --warn:#DE9ADF; --warn-soft:#3A2140; --bad:#FF8A80;
   color-scheme:dark;
 }}
 :root[data-theme="dark"]{
-  --paper:#0E1210; --card:#171C19; --sunk:#1F2521; --ink:#E7EDE9; --muted:#97A39C; --line:#29302C;
-  --accent:#8FA7F2; --accent-ink:#0E1210; --accent-soft:#1D2641;
-  --in:#5DC690; --in-soft:#173126; --warn:#F0A262; --warn-soft:#3A2717; --bad:#FF8A80;
-  --c1:#8FA7F2; --c2:#5DC690; --c3:#F0A262; --c4:#C79BEA; --c5:#5CC7D0; --c6:#EE8DB0; --c7:#C9C56A; --c8:#A3ACB5;
+  --paper:#14111D; --card:#1D1929; --sunk:#27213A; --ink:#EEEBF6; --muted:#A8A1BE; --line:#332C48;
+  --accent:#AE9DE6; --accent-ink:#14111D; --accent-soft:#2B2446;
+  --in:#A9DBA0; --in-soft:#1E3123; --warn:#DE9ADF; --warn-soft:#3A2140; --bad:#FF8A80;
   color-scheme:dark;
 }
+.band{display:flex;height:6px;border-radius:3px;overflow:hidden}
+.band i{flex:1}
+.band i:nth-child(1){background:var(--p-mint)} .band i:nth-child(2){background:var(--p-aqua)} .band i:nth-child(3){background:var(--p-blue)} .band i:nth-child(4){background:var(--p-purple)} .band i:nth-child(5){background:var(--p-plum)}
+.hero-card{background:linear-gradient(135deg,color-mix(in srgb,var(--p-mint) 38%,var(--card)),color-mix(in srgb,var(--p-aqua) 30%,var(--card)));border:1px solid var(--line);border-radius:var(--r);padding:18px 16px;display:flex;flex-direction:column;gap:6px}
+.partner-hero{background:linear-gradient(135deg,color-mix(in srgb,var(--p-blue) 26%,var(--card)),color-mix(in srgb,var(--p-purple) 22%,var(--card)))}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
@@ -74,7 +80,10 @@ p{margin:0}
 /* top */
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);padding-block:6px;margin-top:-6px}
 .brand{font-family:var(--display);font-weight:800;font-size:17px;display:flex;align-items:center;gap:8px}
-.mark{width:26px;height:26px;border-radius:7px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-weight:500}
+.mark{width:28px;height:28px;border-radius:8px;flex:none;background:var(--p-purple);color:#fff;display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-weight:500}
+.brand{min-width:0}
+.brand-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand-sub{color:var(--accent)}
 .iconbtn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);display:grid;place-items:center}
 .iconbtn svg{width:18px;height:18px}
 .spin{animation:spin 1s linear infinite}
@@ -91,7 +100,7 @@ p{margin:0}
 /* tx list */
 .tx{display:flex;align-items:center;gap:12px;padding:10px 0;border:0;background:none;width:100%;text-align:left;border-bottom:1px solid var(--line)}
 .tx:last-child{border-bottom:0}
-.glyph{width:38px;height:38px;border-radius:11px;flex:none;display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-weight:500;color:var(--g);background:color-mix(in srgb,var(--g) 14%,var(--card))}
+.glyph{width:38px;height:38px;border-radius:11px;flex:none;display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-weight:500;color:var(--ink);background:color-mix(in srgb,var(--g) 42%,var(--card))}
 .glyph.mini{width:22px;height:22px;border-radius:6px;font-size:9px}
 .tx .main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .tx .ttl{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -218,7 +227,11 @@ const S = {
   err: null, loadedAt: null, refreshing: false,
   month: null, hFilter: 'semua', hQuery: '',
   sheet: null,           // overlay state
-  mcp: null, sample: null
+  mcp: null, sample: null,
+  // Wanda's view: she reads only rows marked Beban Bersama, synced by Otta's page into the artifact db.
+  role: 'owner', db: null, preview: false,
+  partner: null, pState: 'idle', pErr: null, pMonth: null,
+  sync: { status: 'idle', at: null, count: 0, err: null }
 };
 
 /* ---------- helpers ---------- */
@@ -414,6 +427,7 @@ async function loadAll(refresh){
   S.mode = 'live';
   if (!S.month) S.month = mkey(today());
   render();
+  syncPartner();
 }
 function errCopy(e){
   const code = e && e.code;
@@ -500,6 +514,7 @@ async function saveEdit(t, patch){
     await S.mcp.callTool(SRV, 'update_values', { spreadsheetId:SHEET_ID, range, values:[vals] }, { cache:false });
     Object.assign(t, next);
     toast('Sheet diperbarui');
+    syncPartner();
     S.mcp.invalidate(SRV, 'get_values').catch(() => {});
     return true;
   } catch (e) {
@@ -635,17 +650,16 @@ function txRow(t, i){
   </button>`;
 }
 function greeting(){ const h = new Date().getHours(); return h < 11 ? 'Selamat pagi' : h < 15 ? 'Selamat siang' : h < 19 ? 'Selamat sore' : 'Selamat malam'; }
+const BRAND = `<div class="brand"><span class="mark" aria-hidden="true">OW</span><span class="brand-name">Buku Kas <span class="brand-sub">Otta Wanda</span></span></div>`;
+const BAND = `<div class="band" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>`;
 function topBar(){
-  const live = S.mode === 'live';
-  const updated = S.loadedAt ? new Date(S.loadedAt) : null;
   return `<header class="top">
-    <div class="brand"><span class="mark">BK</span>Buku Kas</div>
+    ${BRAND}
     <div class="row">
-      ${live && updated ? `<span class="small muted">sheet ${hm(updated)}</span>` : ''}
       ${S.mode === 'sample' ? '<span class="pill warn">data contoh</span>' : ''}
       <button class="iconbtn" data-act="refresh" aria-label="Muat ulang dari sheet" ${S.mode === 'sample' ? 'hidden' : ''}>${S.refreshing ? ICON.refresh.replace('<svg', '<svg class="spin"') : ICON.refresh}</button>
     </div>
-  </header>`;
+  </header>${BAND}`;
 }
 function sampleBanner(){
   if (S.mode !== 'sample') return '';
@@ -677,7 +691,7 @@ function viewHome(){
   const recent = todays.length ? todays : S.tx.filter(t => t.arah === 'Keluar').slice(0, 4);
   return `
   ${topBar()}${sampleBanner()}${errBanner()}
-  <section class="hero" aria-label="Hari ini">
+  <section class="hero hero-card" aria-label="Hari ini">
     <h1>${greeting()}.</h1>
     <p class="muted small">Hari ini · ${HARI[new Date().getDay()]}, ${new Date().getDate()} ${BULAN[new Date().getMonth()]}</p>
     <div class="big num"><small>Rp</small>${Math.round(todayOut).toLocaleString('id-ID')}</div>
@@ -836,8 +850,8 @@ function viewReports(){
   </section>
   <section class="card" aria-label="Sifat">
     <h2>Tetap, variabel, sekali</h2>
-    <div style="display:flex;height:12px;border-radius:6px;overflow:hidden;background:var(--sunk)">${sifat.map(([s,v], i) => v > 0 ? `<span style="width:${(v / Math.max(1, st.out) * 100).toFixed(1)}%;background:var(--c${[1,5,3][i]})"></span>` : '').join('')}</div>
-    <div class="kv" style="grid-template-columns:repeat(3,1fr)">${sifat.map(([s,v], i) => `<div><span class="small row" style="gap:6px"><i style="width:8px;height:8px;border-radius:2px;background:var(--c${[1,5,3][i]})"></i>${s}</span><b style="font-size:15px">${rpShort(v)}</b></div>`).join('')}</div>
+    <div style="display:flex;height:12px;border-radius:6px;overflow:hidden;background:var(--sunk)">${sifat.map(([s,v], i) => v > 0 ? `<span style="width:${(v / Math.max(1, st.out) * 100).toFixed(1)}%;background:var(--c${[3,2,5][i]})"></span>` : '').join('')}</div>
+    <div class="kv" style="grid-template-columns:repeat(3,1fr)">${sifat.map(([s,v], i) => `<div><span class="small row" style="gap:6px"><i style="width:8px;height:8px;border-radius:2px;background:var(--c${[3,2,5][i]})"></i>${s}</span><b style="font-size:15px">${rpShort(v)}</b></div>`).join('')}</div>
   </section>
   <section class="card" aria-label="12 bulan">
     <div class="row between"><h2>12 bulan</h2><span class="small muted">keluar vs masuk</span></div>
@@ -922,15 +936,16 @@ function viewKas(){
       ${S.splitTotal ? `<tfoot><tr style="border-top:2px solid var(--ink)"><td style="padding:8px 0;font-weight:700">Total</td><td style="text-align:right">${rpShort(S.splitTotal.total)}</td><td style="text-align:right">${rpShort(S.splitTotal.otta)}</td><td style="text-align:right;font-weight:700">${rpShort(S.splitTotal.wanda)}</td></tr></tfoot>` : ''}
     </table></div>` : `<p class="small muted">${splitErr ? 'Tab Split belum terbaca: ' + esc(errCopy(splitErr).short) + '.' : S.mode === 'sample' ? 'Tersedia saat tersambung ke sheet.' : 'Belum ada beban bersama.'}</p>`}
   </section>
+  ${viewSyncCard()}
   <section class="card" aria-label="Sumber">
-    <div class="row">${ICON.sheet}<div style="min-width:0"><b>Spending Tracker 2026 V2</b><p class="small muted">Sumber kebenaran tetap Obsidian. Transaksi baru dari app ditandai sumber “app”.</p></div></div>
+    <div class="row">${ICON.sheet}<div style="min-width:0"><b>Spending Tracker 2026 V2</b><p class="small muted">Sumber kebenaran tetap Obsidian. Transaksi baru dari app ditandai sumber “app”.${S.loadedAt && S.mode === 'live' ? ` Dibaca dari sheet pukul ${hm(new Date(S.loadedAt))}.` : ''}</p></div></div>
     <a class="btn ghost wide" href="https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit" target="_blank" rel="noopener">Buka sheet</a>
   </section>`;
 }
 
 function viewOnboarding(){
   if (S.onboard === 0) return `<div class="ob">
-    <div class="row between"><div class="brand"><span class="mark">BK</span>Buku Kas</div><button class="link" data-act="ob-sample">Lihat contoh</button></div>
+    <div class="row between">${BRAND}<button class="link" data-act="ob-sample">Lihat contoh</button></div>${BAND}
     <div class="art" aria-hidden="true">
       <div class="slip a"><span class="label">Contoh</span><div class="t"><b>Parkir</b><span>5.000</span></div><div class="t"><b>Kopi susu</b><span>25.000</span></div><div class="cut"></div></div>
       <div class="slip b"><span class="label">Masuk</span><div class="t"><b>Honor sesi</b><span style="color:var(--in)">+3jt</span></div><div class="t muted"><span>Pendapatan Musik</span></div><div class="cut"></div></div>
@@ -955,6 +970,155 @@ function viewOnboarding(){
   </div>`;
 }
 
+/* ---------- Wanda's view (shared expenses only) ---------- */
+const hashOf = s => { let h = 5381; for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0; return h.toString(36); };
+
+/* Everything Wanda can ever see is built here, from rows marked Beban Bersama only. */
+function buildPartner(){
+  const share = 1 - (S.porsi || 0.5);
+  const byK = {};
+  for (const t of S.tx) {
+    if (!t.shared) continue;
+    const k = mkey(t.date);
+    const m = byK[k] || (byK[k] = { k, total:0, wanda:0, count:0, rows:[] });
+    m.total += t.nominal; m.wanda += t.nominal * share; m.count++;
+    m.rows.push({ d:t.date, t:t.time || '', ket:t.ket, kat:t.kat, n:Math.round(t.nominal), sem:t.src.startsWith('email') });
+  }
+  const months = Object.values(byK).sort((a,b) => b.k.localeCompare(a.k));
+  months.forEach(m => { m.total = Math.round(m.total); m.wanda = Math.round(m.wanda); m.rows.sort((a,b) => (b.d + b.t).localeCompare(a.d + a.t)); });
+  return { porsiOtta: S.porsi || 0.5, months };
+}
+function partnerFromDocs(docs){
+  const meta = docs.meta || {};
+  const months = Object.keys(docs).filter(id => /^\d{4}-\d{2}$/.test(id)).map(id => docs[id]).sort((a,b) => b.k.localeCompare(a.k));
+  return { porsiOtta: Number(meta.porsiOtta) || 0.5, updatedAt: meta.updatedAt || null, months };
+}
+async function syncPartner(){
+  if (!S.db || S.role !== 'owner' || S.mode !== 'live') return;
+  if (S.sync.status === 'busy') return;
+  S.sync = { ...S.sync, status:'busy', err:null };
+  try {
+    const P = buildPartner();
+    const metaRef = S.db.doc('berdua/meta');
+    const cur = await metaRef.get();
+    const old = cur.exists ? (cur.data() || {}) : {};
+    const oldHashes = old.hashes || {};
+    const hashes = {};
+    let wrote = 0;
+    for (const m of P.months) {
+      const h = hashOf(JSON.stringify(m));
+      hashes[m.k] = h;
+      if (oldHashes[m.k] !== h) { await S.db.doc('berdua/' + m.k).set(m); wrote++; }
+    }
+    for (const k of Object.keys(oldHashes)) if (!hashes[k]) { await S.db.doc('berdua/' + k).delete(); wrote++; }
+    const changed = wrote > 0 || old.porsiOtta !== P.porsiOtta || !cur.exists;
+    const at = changed ? Date.now() : (old.updatedAt || Date.now());
+    if (changed) await metaRef.set({ updatedAt: at, porsiOtta: P.porsiOtta, hashes, months: P.months.map(m => ({ k:m.k, total:m.total, wanda:m.wanda, count:m.count })) });
+    S.sync = { status:'ok', at, count: P.months.reduce((s,m) => s + m.count, 0), err:null, wrote };
+  } catch (e) {
+    S.sync = { ...S.sync, status:'error', err:e };
+  }
+  if (S.tab === 'kas' && !S.sheet) render();
+}
+function listenPartner(){
+  if (!S.db) { S.pState = 'nodb'; render(); return; }
+  S.pState = 'loading'; render();
+  const timer = setTimeout(() => { if (S.pState === 'loading') { S.pState = 'slow'; render(); } }, 10000);
+  S.db.collection('berdua').onSnapshot(snap => {
+    clearTimeout(timer);
+    const docs = {};
+    snap.docs.forEach(d => { docs[d.id] = d.data(); });
+    S.partner = partnerFromDocs(docs);
+    S.pState = S.partner.months.length ? 'ready' : 'empty';
+    if (!S.pMonth || !S.partner.months.some(m => m.k === S.pMonth)) S.pMonth = S.partner.months.length ? S.partner.months[0].k : null;
+    render();
+  }, err => {
+    clearTimeout(timer);
+    S.pState = 'error'; S.pErr = err; render();
+  });
+}
+function viewSyncCard(){
+  const sy = S.sync;
+  const status = S.mode === 'sample' ? 'Mode contoh: tidak ada yang dikirim ke Wanda.'
+    : !S.db ? 'Penyimpanan berbagi belum aktif di tampilan ini.'
+    : sy.status === 'busy' ? 'Menyinkronkan…'
+    : sy.status === 'error' ? `Gagal sinkron (${esc((sy.err && sy.err.code) || 'error')}). Coba muat ulang.`
+    : sy.status === 'ok' ? `${sy.count} transaksi berdua tersinkron · data per ${new Date(sy.at).toLocaleString('id-ID', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' })}`
+    : 'Belum sinkron.';
+  return `<section class="card" aria-label="Tampilan Wanda">
+    <div class="row between"><h2>Tampilan Wanda</h2><span class="pill ${sy.status === 'error' ? 'warn' : sy.status === 'ok' ? 'in' : ''}">${sy.status === 'ok' ? 'tersinkron' : sy.status === 'error' ? 'gagal' : 'menunggu'}</span></div>
+    <p class="small muted">Wanda cuma bisa lihat transaksi yang dicentang Beban Bersama, beserta bagiannya (${Math.round((1 - S.porsi) * 100)}%). Transaksi pribadi, saldo, dan runway tidak ikut. Bagikan artifact ini ke Wanda lewat Share sebagai Viewer.</p>
+    <p class="small">${status}</p>
+    <button class="btn ghost wide" data-act="preview-wanda">Lihat seperti Wanda</button>
+  </section>`;
+}
+function viewPartner(){
+  const P = S.preview ? S.previewData : S.partner;
+  const head = `<header class="top">${BRAND}${S.preview ? '<button class="btn ghost" style="min-height:38px;padding:8px 14px" data-act="preview-exit">Tutup pratinjau</button>' : ''}</header>${BAND}`;
+  const pre = S.preview ? `<div class="banner info"><span>Pratinjau: begini yang Wanda lihat.${S.mode === 'sample' ? ' Isinya data contoh.' : ''}</span></div>` : '';
+  if (!S.preview && S.pState !== 'ready') {
+    const msg = {
+      loading: ['Memuat…', 'Membaca catatan bersama.'],
+      slow: ['Masih memuat', 'Koneksi lambat. Halaman akan terisi begitu datanya sampai.'],
+      empty: ['Belum ada catatan berdua', 'Begitu Otta membuka Buku Kas, transaksi yang dibagi berdua muncul di sini.'],
+      nodb: ['Belum bisa dibuka di sini', 'Buka halaman ini di claude.ai dengan akun yang diundang Otta.'],
+      error: ['Catatan belum bisa dibaca', S.pErr && (S.pErr.code === 'not_granted' || S.pErr.code === 'revoked') ? 'Akses kamu ke halaman ini belum aktif. Minta Otta membagikan ulang.' : 'Coba muat ulang halaman sebentar lagi.']
+    }[S.pState] || ['Memuat…', ''];
+    return `${head}<section class="hero hero-card partner-hero"><h1>Halo, Wanda.</h1></section>
+      <section class="card"><h2>${esc(msg[0])}</h2><p class="muted">${esc(msg[1])}</p></section>`;
+  }
+  if (!P || !P.months.length) return `${head}${pre}<section class="hero hero-card partner-hero"><h1>Halo, Wanda.</h1></section><section class="card"><h2>Belum ada catatan berdua</h2><p class="muted">Transaksi yang dicentang Beban Bersama akan muncul di sini.</p></section>`;
+  const ks = P.months.map(m => m.k);
+  if (!S.pMonth || !ks.includes(S.pMonth)) S.pMonth = ks[0];
+  const m = P.months.find(x => x.k === S.pMonth) || P.months[0];
+  const i = ks.indexOf(m.k);
+  const share = 1 - P.porsiOtta;
+  const rows = m.rows || [];
+  const sem = rows.filter(r => r.sem).length;
+  const LIMIT = 25;
+  const shown = S.pAll ? rows : rows.slice(0, LIMIT);
+  const byDay = {};
+  shown.forEach(r => (byDay[r.d] = byDay[r.d] || []).push(r));
+  const days = Object.keys(byDay).sort().reverse();
+  const more = rows.length - shown.length;
+  return `${head}${pre}
+  <section class="hero hero-card partner-hero" aria-label="Bagian Wanda">
+    <div class="row between wrap"><h1>Halo, Wanda.</h1>
+      <div class="row" style="gap:4px">
+        <button class="iconbtn" data-act="pmonth" data-d="1" aria-label="Bulan sebelumnya" ${i >= ks.length - 1 ? 'disabled' : ''}>${ICON.left}</button>
+        <b style="min-width:84px;text-align:center">${monthLabel(m.k)}</b>
+        <button class="iconbtn" data-act="pmonth" data-d="-1" aria-label="Bulan berikutnya" ${i <= 0 ? 'disabled' : ''}>${ICON.right}</button>
+      </div>
+    </div>
+    <span class="label">Bagian kamu</span>
+    <div class="big num"><small>Rp</small>${Math.round(m.wanda).toLocaleString('id-ID')}</div>
+    <p class="muted">dari ${rp(m.total)} belanja berdua · ${m.count} transaksi · bagian kamu ${Math.round(share * 100)}%</p>
+  </section>
+  ${sem ? `<div class="banner"><span>${sem} transaksi masih sementara (dari notifikasi email). Angkanya bisa sedikit berubah setelah Otta mencocokkan dengan e-statement.</span></div>` : ''}
+  <section class="card" style="gap:4px" aria-label="Transaksi berdua">
+    <h2 style="margin-bottom:6px">Transaksi berdua</h2>
+    ${days.map(d => {
+      const dt = parseYMD(d), list = byDay[d];
+      const tot = list.reduce((s,r) => s + r.n, 0);
+      return `<div class="dayhead"><span class="label">${HARI[dt.getDay()]}, ${dt.getDate()} ${BLN[dt.getMonth()]}</span><span class="small muted num">${rp(tot)}</span></div>
+      <div>${list.map(r => `<div class="tx" role="listitem">${glyph(r.kat)}
+        <span class="main"><span class="ttl">${esc(r.ket || '(tanpa keterangan)')}</span>
+        <span class="sub">${esc(r.kat)}${r.t ? ' · ' + esc(r.t) : ''}${r.sem ? ' <span class="pill">sementara</span>' : ''}</span></span>
+        <span style="text-align:right"><span class="amt" style="display:block">${rp(r.n * share)}</span><span class="small muted num">dari ${rp(r.n)}</span></span>
+      </div>`).join('')}</div>`;
+    }).join('')}
+    ${more > 0 ? `<button class="btn ghost wide" style="margin-top:8px" data-act="pall">Tampilkan ${more} transaksi lagi</button>` : ''}
+  </section>
+  <section class="card" aria-label="Per bulan">
+    <h2>Per bulan</h2>
+    <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:14px" class="num">
+      <thead><tr>${['Bulan','Total berdua','Bagian kamu'].map((h,j) => `<th class="label" style="text-align:${j ? 'right' : 'left'};padding:4px 0;font-weight:500">${h}</th>`).join('')}</tr></thead>
+      <tbody>${P.months.map(x => `<tr style="border-top:1px solid var(--line)${x.k === m.k ? ';background:var(--accent-soft)' : ''}"><td style="padding:8px 4px">${monthLabel(x.k)}</td><td style="text-align:right;padding:8px 4px">${rpShort(x.total)}</td><td style="text-align:right;font-weight:700;padding:8px 4px">${rpShort(x.wanda)}</td></tr>`).join('')}</tbody>
+    </table></div>
+    <p class="small muted">${P.updatedAt ? `Data per ${new Date(P.updatedAt).toLocaleString('id-ID', { day:'numeric', month:'long', hour:'2-digit', minute:'2-digit' })}. ` : ''}Diambil dari catatan Otta, hanya transaksi yang dibagi berdua.</p>
+  </section>`;
+}
+
 function viewError(){
   const c = errCopy(S.err);
   return `${topBar()}<section class="card" style="margin-top:30px">
@@ -972,8 +1136,10 @@ function render(){
   const bar = document.getElementById('tabbar');
   const focusId = document.activeElement && document.activeElement.id;
   const caret = focusId && document.activeElement.selectionStart;
+  if (S.role === 'partner' || S.preview) { root.innerHTML = viewPartner(); bar.hidden = true; return; }
+  if (S.mode === 'boot') { root.innerHTML = viewLoading(); bar.hidden = true; return; }
   if (S.onboard >= 0) { root.innerHTML = viewOnboarding(); bar.hidden = true; return; }
-  if (S.mode === 'boot' || (S.mode === 'loading' && !S.tx.length)) { root.innerHTML = viewLoading(); bar.hidden = true; return; }
+  if (S.mode === 'loading' && !S.tx.length) { root.innerHTML = viewLoading(); bar.hidden = true; return; }
   if (S.mode === 'error') { root.innerHTML = viewError(); bar.hidden = true; return; }
   root.innerHTML = S.tab === 'riwayat' ? viewHistory() : S.tab === 'laporan' ? viewReports() : S.tab === 'kas' ? viewKas() : viewHome();
   bar.hidden = false;
@@ -1070,7 +1236,18 @@ document.addEventListener('click', async e => {
     case 'ob-back': S.onboard = 0; render(); break;
     case 'ob-sample': S.onboard = -1; S.err = null; enterSample(); break;
     case 'ob-connect': S.onboard = -1; store.set('onboarded', '1'); if (S.mcp) loadAll(false); else { enterSample(); toast('Connector tidak tersedia di sini. Menampilkan data contoh.'); } break;
-    case 'refresh': if (S.mcp && !S.refreshing) loadAll(true); break;
+    case 'refresh': if (S.mcp && !S.refreshing && S.role === 'owner') loadAll(true); break;
+    case 'preview-wanda': S.previewData = buildPartner(); S.previewData.updatedAt = S.sync.at || Date.now(); S.preview = true; S.pMonth = null; render(); window.scrollTo(0, 0); break;
+    case 'preview-exit': S.preview = false; render(); window.scrollTo(0, 0); break;
+    case 'pmonth': {
+      const P = S.preview ? S.previewData : S.partner;
+      if (!P) break;
+      const ks = P.months.map(m => m.k);
+      const j = ks.indexOf(S.pMonth) + Number(el.dataset.d);
+      if (j >= 0 && j < ks.length) { S.pMonth = ks[j]; S.pAll = false; render(); }
+      break;
+    }
+    case 'pall': S.pAll = true; render(); break;
     case 'perms': try { const p = await window.claude.use('permissions'); if (p) await p.manage(); } catch { toast('Buka menu Permissions artifact ini di claude.ai'); } break;
     case 'tab': S.tab = el.dataset.tab; if (S.tab !== 'riwayat' && S.hFilter === 'jelas') S.hFilter = 'semua'; try { history.replaceState(null, '', '#' + S.tab); } catch {} render(); window.scrollTo(0, 0); break;
     case 'month': S.month = addMonths(S.month, +el.dataset.d); render(); break;
@@ -1157,10 +1334,17 @@ S.month = mkey(today());
 render();
 (async () => {
   const c = window.claude;
-  const [mcp, sample] = await Promise.all([
-    c && c.use ? c.use('mcp').catch(() => null) : null,
-    c && c.use ? c.use('sample').catch(() => null) : null
-  ]);
+  const use = name => (c && c.use ? Promise.resolve(c.use(name)).catch(() => null) : Promise.resolve(null));
+  const [mcp, sample, db, user] = await Promise.all([use('mcp'), use('sample'), use('db'), use('user')]);
+  S.db = db;
+  let owner = true;
+  if (user) { try { owner = await user.isOwner(); } catch { owner = true; } }
+  if (!owner) {
+    // Wanda (or anyone the artifact is shared with): never touch the sheet, read the shared summary only.
+    S.role = 'partner'; S.onboard = -1;
+    listenPartner();
+    return;
+  }
   S.mcp = mcp; S.sample = sample;
   if (S.onboard >= 0) { S.mode = 'idle'; render(); return; }
   if (mcp) loadAll(false); else enterSample();

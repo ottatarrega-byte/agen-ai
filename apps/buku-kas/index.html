@@ -280,6 +280,7 @@ const catCode = name => {
   return CAT_CODE[name] = { code, tone: `var(--c${(h % 8) + 1})` };
 };
 const catInfo = name => S.cats.find(c => c.name === name) || null;
+const arahOff = t => { const c = catInfo(t.kat); return !!c && c.arah !== t.arah; };
 
 /* ---------- data shaping ---------- */
 function shapeTx(values){
@@ -666,6 +667,8 @@ function viewHome(){
   const yOut = S.tx.filter(t => t.date === ymd(y) && t.arah === 'Keluar').reduce((s,t) => s + t.nominal, 0);
   const usual = usualNow();
   const unclear = S.tx.filter(t => t.kat === UNCLEAR && mkey(t.date) >= addMonths(k, -1));
+  const mism = S.tx.filter(arahOff);
+  const mismSum = mism.filter(t => t.arah === 'Keluar').reduce((s,t) => s + t.nominal, 0);
   const runway = dashFind('Runway');
   const runwayN = runway ? parseFloat(String(runway.value).replace(',', '.')) : null;
   const recent = todays.length ? todays : S.tx.filter(t => t.arah === 'Keluar').slice(0, 4);
@@ -683,6 +686,7 @@ function viewHome(){
   </form>
   ${usual.length ? `<div class="stack" style="gap:8px"><span class="label">Biasanya jam segini</span><div class="chips">${usual.map((u,i) => `<button class="chip" data-act="again" data-u="${i}">${glyph(u.kat, true)}${esc(u.ket)} · ${rpShort(u.nominal)}</button>`).join('')}</div></div>` : ''}
   ${unclear.length ? `<div class="banner"><span><b>${unclear.length} transaksi belum jelas</b> sejak ${monthLabel(addMonths(k,-1))}. Beresin kategorinya biar rata-rata dan runway akurat.</span><button class="link" data-act="go-unclear">Pilah</button></div>` : ''}
+  ${mism.length ? `<div class="banner"><span><b>${mism.length} baris arahnya tidak cocok</b> dengan kategori di Pengaturan${mismSum ? `, ${rpShort(mismSum)} ikut kehitung pengeluaran` : ''}. Contoh: Bayar CC atau Talangan tercatat Keluar.</span><button class="link" data-act="go-arah">Cek</button></div>` : ''}
   <section class="card" aria-label="Transaksi">
     <div class="row between"><h2>${todays.length ? 'Hari ini' : 'Terakhir'}</h2><button class="link" data-act="tab" data-tab="riwayat">Semua</button></div>
     <div>${recent.length ? recent.slice(0, 5).map(txRow).join('') : '<div class="empty">Belum ada transaksi.</div>'}</div>
@@ -756,12 +760,13 @@ function monthNav(){
 function viewHistory(){
   const q = S.hQuery.trim().toLowerCase();
   const f = S.hFilter;
-  const allMonths = f === 'jelas' || q.length > 2;
+  const allMonths = f === 'jelas' || f === 'arah' || q.length > 2;
   const FILTERS = {
     semua: () => true,
     keluar: t => t.arah === 'Keluar', masuk: t => t.arah === 'Masuk', netral: t => t.arah === 'Netral',
     jelas: t => t.kat === UNCLEAR || t.kat === 'Pendapatan (belum dipilah)',
-    berdua: t => t.shared, kerja: t => t.konteks === 'Kerja'
+    berdua: t => t.shared, kerja: t => t.konteks === 'Kerja',
+    arah: arahOff
   };
   let rows = S.tx.filter(t => (allMonths || mkey(t.date) === S.month) && (FILTERS[f] || FILTERS.semua)(t));
   if (q) rows = rows.filter(t => t.ket.toLowerCase().includes(q) || t.kat.toLowerCase().includes(q));
@@ -769,10 +774,10 @@ function viewHistory(){
   const byDay = {};
   rows.forEach(t => (byDay[t.date] = byDay[t.date] || []).push(t));
   const days = Object.keys(byDay).sort().reverse();
-  const chips = [['semua','Semua'],['keluar','Keluar'],['masuk','Masuk'],['netral','Netral'],['jelas','Belum jelas'],['berdua','Berdua'],['kerja','Kerja']];
+  const chips = [['semua','Semua'],['keluar','Keluar'],['masuk','Masuk'],['netral','Netral'],['jelas','Belum jelas'],['berdua','Berdua'],['kerja','Kerja'],['arah','Arah janggal']];
   const shown = days.slice(0, 62);
   return `${topBar()}${sampleBanner()}${errBanner()}
-  <div class="row between wrap"><h1>Riwayat</h1>${f === 'jelas' ? '<span class="pill warn">semua bulan</span>' : monthNav()}</div>
+  <div class="row between wrap"><h1>Riwayat</h1>${f === 'jelas' || f === 'arah' ? '<span class="pill warn">semua bulan</span>' : monthNav()}</div>
   <input class="input" id="h-search" type="search" placeholder="Cari keterangan atau kategori" value="${esc(S.hQuery)}" aria-label="Cari transaksi">
   <div class="chips" role="group" aria-label="Filter">${chips.map(([k,l]) => `<button class="chip" data-act="hfilter" data-f="${k}" aria-pressed="${f === k}">${l}</button>`).join('')}</div>
   <p class="small muted">${rows.length} transaksi${out ? ' · ' + rp(out) + ' keluar' : ''}${q && q.length > 2 ? ' · pencarian di semua bulan' : ''}</p>
@@ -782,7 +787,7 @@ function viewHistory(){
       const dOut = list.filter(t => t.arah === 'Keluar').reduce((s,t) => s + t.nominal, 0);
       return `<div class="dayhead"><span class="label">${d === today() ? 'Hari ini' : HARI[dt.getDay()] + ', ' + dt.getDate() + ' ' + BLN[dt.getMonth()] + (f === 'jelas' || q ? ' ' + dt.getFullYear() : '')}</span><span class="small muted num">${dOut ? '- ' + rp(dOut).replace('-','') : ''}</span></div>
       <div>${list.map(txRow).join('')}</div>`;
-    }).join('') : `<div class="empty"><b>Tidak ada transaksi</b><span>${f === 'jelas' ? 'Semua kategori sudah jelas.' : 'Coba bulan lain atau ubah filter.'}</span></div>`}
+    }).join('') : `<div class="empty"><b>Tidak ada transaksi</b><span>${f === 'jelas' ? 'Semua kategori sudah jelas.' : f === 'arah' ? 'Semua arah sudah cocok dengan kategorinya.' : 'Coba bulan lain atau ubah filter.'}</span></div>`}
     ${days.length > shown.length ? `<p class="small muted">Menampilkan ${shown.length} hari terbaru.</p>` : ''}
   </section>`;
 }
@@ -1017,7 +1022,7 @@ function renderSheet(){
     <div class="big num ${amtClass(t)}" style="font-size:34px">${esc(amtText(t))}</div>
     <div class="detail"><dl>
       <dt>Tanggal</dt><dd>${esc(t.date)}${t.time ? ' · ' + esc(t.time) : ''}</dd>
-      <dt>Arah</dt><dd>${esc(t.arah)} · ${esc(t.sifat || '–')}</dd>
+      <dt>Arah</dt><dd>${esc(t.arah)} · ${esc(t.sifat || '–')}${arahOff(t) ? ` <span class="pill warn">kategori ini harusnya ${esc(catInfo(t.kat).arah)}</span>` : ''}</dd>
       <dt>Sumber</dt><dd>${esc(t.src || '–')}${t.src.startsWith('email') ? ' <span class="pill warn">sementara sampai rekonsiliasi</span>' : ''}</dd>
       <dt>Baris sheet</dt><dd>${t.row ? 'Transaksi!' + t.row : 'belum dimuat ulang'}</dd>
       ${t.shared ? `<dt>Porsi Otta</dt><dd>${rp(t.porsi || t.nominal * S.porsi)}</dd>` : ''}
@@ -1026,7 +1031,7 @@ function renderSheet(){
     <div class="field"><label for="e-kat">Kategori</label><select class="input" id="e-kat">${catOptions(s.kat)}</select></div>
     <div class="field"><label>Konteks</label><div class="seg" role="group" aria-label="Konteks"><button data-act="ek" data-v="Pribadi" aria-pressed="${s.konteks !== 'Kerja'}">Pribadi</button><button data-act="ek" data-v="Kerja" aria-pressed="${s.konteks === 'Kerja'}">Kerja</button></div></div>
     <label class="check"><input type="checkbox" id="e-shared" ${s.shared ? 'checked' : ''}> Beban bersama dengan Wanda</label>
-    <button class="btn wide" data-act="save-edit" ${s.busy || (s.kat === t.kat && s.konteks === t.konteks && s.shared === t.shared) ? 'disabled' : ''}>${s.busy ? 'Menyimpan…' : 'Simpan perubahan ke sheet'}</button>
+    <button class="btn wide" data-act="save-edit" ${s.busy || (s.kat === t.kat && s.konteks === t.konteks && s.shared === t.shared && !arahOff({ kat:s.kat, arah:t.arah })) ? 'disabled' : ''}>${s.busy ? 'Menyimpan…' : arahOff({ kat:s.kat, arah:t.arah }) ? `Simpan, arah jadi ${esc(catInfo(s.kat).arah)}` : 'Simpan perubahan ke sheet'}</button>
     <button class="btn ghost wide" data-act="again-tx">Catat lagi hari ini</button>`;
   }
   ov.innerHTML = `<div class="scrim" data-act="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-label="${s.kind === 'add' ? 'Tambah transaksi' : 'Detail transaksi'}"><div class="grab"></div>${body}</div></div>`;
@@ -1067,6 +1072,7 @@ document.addEventListener('click', async e => {
     case 'month': S.month = addMonths(S.month, +el.dataset.d); render(); break;
     case 'hfilter': S.hFilter = el.dataset.f; render(); break;
     case 'go-unclear': S.tab = 'riwayat'; S.hFilter = 'jelas'; render(); window.scrollTo(0, 0); break;
+    case 'go-arah': S.tab = 'riwayat'; S.hFilter = 'arah'; render(); window.scrollTo(0, 0); break;
     case 'detail': { const t = S.tx[+el.dataset.i]; if (t) openSheet({ kind:'detail', t, kat:t.kat, konteks:t.konteks, shared:t.shared }); break; }
     case 'add': openSheet({ kind:'add', mode:'ketik', text:'', drafts:null, form:newForm() }); setTimeout(() => { const t = document.getElementById('k-text'); if (t) t.focus(); }, 50); break;
     case 'again': { const u = S._usual[+el.dataset.u]; if (u) openSheet({ kind:'add', mode:'form', form:newForm({ ket:u.ket, kat:u.kat, nominal:u.nominal, konteks:u.konteks }) }); break; }

@@ -280,7 +280,9 @@ const catCode = name => {
   return CAT_CODE[name] = { code, tone: `var(--c${(h % 8) + 1})` };
 };
 const catInfo = name => S.cats.find(c => c.name === name) || null;
-const arahOff = t => { const c = catInfo(t.kat); return !!c && c.arah !== t.arah; };
+const TALANGAN = 'Talangan & Reimburse';
+/* Talangan stays Keluar until it is paid back, then becomes Netral (house rule since Oct 2026). */
+const arahOff = t => { const c = catInfo(t.kat); if (!c) return false; if (t.kat === TALANGAN && t.arah === 'Keluar') return false; return c.arah !== t.arah; };
 
 /* ---------- data shaping ---------- */
 function shapeTx(values){
@@ -341,7 +343,7 @@ const dashFind = prefix => { const k = Object.keys(S.dash).find(k => k.toLowerCa
 
 function monthStats(k){
   const rows = S.tx.filter(t => mkey(t.date) === k);
-  const st = { k, rows, out:0, in:0, netral:0, cats:{}, days:{}, sifat:{}, kerja:0, shared:0, unclear:0, provisional:0, count:0 };
+  const st = { k, rows, out:0, in:0, netral:0, cats:{}, days:{}, sifat:{}, kerja:0, shared:0, unclear:0, provisional:0, count:0, talangan:0 };
   for (const t of rows) {
     if (t.arah === 'Keluar') {
       st.out += t.nominal; st.count++;
@@ -350,6 +352,7 @@ function monthStats(k){
       const sf = t.sifat || 'Variabel'; st.sifat[sf] = (st.sifat[sf] || 0) + t.nominal;
       if (t.konteks === 'Kerja') st.kerja += t.nominal;
       if (t.shared) st.shared += t.nominal;
+      if (t.kat === TALANGAN) st.talangan += t.nominal;
     } else if (t.arah === 'Masuk') st.in += t.nominal;
     else st.netral += t.nominal;
     if (t.kat === UNCLEAR || t.kat === 'Pendapatan (belum dipilah)') st.unclear++;
@@ -686,7 +689,7 @@ function viewHome(){
   </form>
   ${usual.length ? `<div class="stack" style="gap:8px"><span class="label">Biasanya jam segini</span><div class="chips">${usual.map((u,i) => `<button class="chip" data-act="again" data-u="${i}">${glyph(u.kat, true)}${esc(u.ket)} · ${rpShort(u.nominal)}</button>`).join('')}</div></div>` : ''}
   ${unclear.length ? `<div class="banner"><span><b>${unclear.length} transaksi belum jelas</b> sejak ${monthLabel(addMonths(k,-1))}. Beresin kategorinya biar rata-rata dan runway akurat.</span><button class="link" data-act="go-unclear">Pilah</button></div>` : ''}
-  ${mism.length ? `<div class="banner"><span><b>${mism.length} baris arahnya tidak cocok</b> dengan kategori di Pengaturan${mismSum ? `, ${rpShort(mismSum)} ikut kehitung pengeluaran` : ''}. Contoh: Bayar CC atau Talangan tercatat Keluar.</span><button class="link" data-act="go-arah">Cek</button></div>` : ''}
+  ${mism.length ? `<div class="banner"><span><b>${mism.length} baris arahnya tidak cocok</b> dengan kategori di Pengaturan${mismSum ? `, ${rpShort(mismSum)} ikut kehitung pengeluaran` : ''}. Contoh: Bayar CC tercatat Keluar, padahal belanja kartunya sudah dihitung satu per satu.</span><button class="link" data-act="go-arah">Cek</button></div>` : ''}
   <section class="card" aria-label="Transaksi">
     <div class="row between"><h2>${todays.length ? 'Hari ini' : 'Terakhir'}</h2><button class="link" data-act="tab" data-tab="riwayat">Semua</button></div>
     <div>${recent.length ? recent.slice(0, 5).map(txRow).join('') : '<div class="empty">Belum ada transaksi.</div>'}</div>
@@ -807,6 +810,7 @@ function viewReports(){
     <span class="label">Uang keluar</span>
     <div class="big num"><small>Rp</small>${Math.round(st.out).toLocaleString('id-ID')}</div>
     <p class="muted">Masuk <b style="color:var(--in)">${rpShort(st.in)}</b> · net <b>${rpShort(st.in - st.out)}</b>${st.netral ? ` · netral ${rpShort(st.netral)} tidak dihitung` : ''}</p>
+    ${st.talangan ? `<p class="small"><span class="pill warn">talangan</span> Termasuk ${rpShort(st.talangan)} talangan yang belum kembali. Tanpa itu, pengeluaran kamu ${rpShort(st.out - st.talangan)}.</p>` : ''}
     <div class="kv">
       <div><span class="small muted">Rata-rata per hari</span><b>${rpShort(st.out / Math.max(1, nDays))}</b></div>
       <div><span class="small muted">vs ${monthLabel(addMonths(S.month,-1))}</span><b class="${diff <= 0 ? 'delta good' : 'delta bad'}" style="font-size:18px">${diff <= 0 ? '−' : '+'}${rpShort(Math.abs(diff))}</b></div>
